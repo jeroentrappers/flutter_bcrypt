@@ -40,6 +40,7 @@ class FlutterBcryptPlugin: MethodCallHandler {
           var off : Int = 0
           val minor : Char
           val password: String = call.password()!!
+          val version : Version
 
           if (salt[0] != '\$' || salt[1] != '2') {
             throw Exception("Invalid salt version");
@@ -62,7 +63,15 @@ class FlutterBcryptPlugin: MethodCallHandler {
 
           realSalt = salt.substring(off + 3, off + 25);
 
-          val hash = BCrypt.withDefaults().hash(rounds, Radix64Encoder.Default().decode(realSalt.toByteArray(Charsets.UTF_8)), password.toByteArray(Charsets.UTF_8))
+          if('a' == minor )
+          {
+            version = Version.VERSION_2A;
+          }
+          else if( 'b' == minor) {
+            version = Version.VERSION_2B;
+          }
+
+          val hash = BCrypt.with(Version()).hash(rounds, Radix64Encoder.Default().decode(realSalt.toByteArray(Charsets.UTF_8)), password.toByteArray(Charsets.UTF_8))
 
           val r = String(hash, Charsets.UTF_8);
 

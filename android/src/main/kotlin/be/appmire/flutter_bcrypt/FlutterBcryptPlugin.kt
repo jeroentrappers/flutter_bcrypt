@@ -71,7 +71,7 @@ class FlutterBcryptPlugin: MethodCallHandler {
             version = Version.VERSION_2B;
           }
 
-          val hash = BCrypt.with(Version()).hash(rounds, Radix64Encoder.Default().decode(realSalt.toByteArray(Charsets.UTF_8)), password.toByteArray(Charsets.UTF_8))
+          val hash = BCrypt.with(version).hash(rounds, Radix64Encoder.Default().decode(realSalt.toByteArray(Charsets.UTF_8)), password.toByteArray(Charsets.UTF_8))
 
           val r = String(hash, Charsets.UTF_8);
 

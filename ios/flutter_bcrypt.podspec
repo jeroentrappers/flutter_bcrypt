@@ -8,13 +8,14 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 A flutter bcrypt hashing plugin delegating to android &#x2F; ios native implementations.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/jeroentrappers/flutter_bcrypt'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Jeroen Trappers' => 'jeroen@appmire.be' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
+  s.dependency 'BCryptSwift' '~> 1.1'
 
   s.ios.deployment_target = '8.0'
 end

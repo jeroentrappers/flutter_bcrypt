@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 class FlutterBcrypt {
   static const MethodChannel _channel = const MethodChannel('flutter_bcrypt');
 
-  /// Create passworde hash for given password and salt. 
-  /// Password must be a plain UTF-8 compatible String. 
+  /// Create passworde hash for given password and salt.
+  /// Password must be a plain UTF-8 compatible String.
   /// Salt must be a string in Modular Crypt Format with $ separators
   /// for example r'$2b$06$C6UzMDM.H6dfI/f/IKxGhu'
   static Future<String> hashPw(
@@ -21,9 +21,9 @@ class FlutterBcrypt {
   static Future<String> saltWithRounds({@required int rounds}) async =>
       await _channel.invokeMethod('saltWithRounds', {'rounds': rounds});
 
-  /// Verify if the given password matches the given hash. 
+  /// Verify if the given password matches the given hash.
   /// Password must be a plain UTF-8 compatible String
-  /// Hash must be provided in Modular Crypt Format. Eg. 
+  /// Hash must be provided in Modular Crypt Format. Eg.
   /// $2y$06$doGnefu9cbLkJTn8sef7U.dynHJFe5hS6xp7vLWb2Zu7e8cOuMVmS
   /// This includes the version, complexity and 16 bytes of salt.
   static Future<bool> verify(

@@ -1,6 +1,6 @@
 name: flutter_bcrypt
 description: A flutter bcrypt hashing plugin delegating to android &#x2F; ios native implementations.
-version: 1.0.2
+version: 1.0.3
 author: Jeroen Trappers <jeroen@appmire.be>
 homepage: https://github.com/jeroentrappers/flutter_bcrypt
 

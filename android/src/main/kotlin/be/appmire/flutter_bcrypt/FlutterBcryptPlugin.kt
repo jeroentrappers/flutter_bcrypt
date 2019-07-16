@@ -1,6 +1,7 @@
 package be.appmire.flutter_bcrypt
 
 import android.util.Log
+import at.favre.lib.bytes.Bytes
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -9,8 +10,11 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import at.favre.lib.crypto.bcrypt.BCrypt.SALT_LENGTH
 import at.favre.lib.crypto.bcrypt.Radix64Encoder
-import java.nio.charset.StandardCharsets
+import java.nio.ByteBuffer
+import java.security.SecureRandom
+import java.util.*
 
 class FlutterBcryptPlugin: MethodCallHandler {
   companion object {
@@ -27,6 +31,39 @@ class FlutterBcryptPlugin: MethodCallHandler {
 
   fun MethodCall.salt(): String? {
     return this.argument("salt")
+  }
+
+  fun MethodCall.hash(): String? {
+    return this.argument("hash")
+  }
+
+  fun MethodCall.rounds(): Int? {
+    return this.argument("rounds")
+  }
+
+  fun saltFromHashData(hashData: BCrypt.HashData): String {
+    val encoder = Radix64Encoder.Default();
+
+    val saltEncoded = encoder.encode(hashData.rawSalt)
+    val hashEncoded = encoder.encode(hashData.rawHash)
+    val costFactorBytes = String.format(Locale.US, "%02d", hashData.cost).toByteArray(Charsets.UTF_8)
+    val separator = '$'.toByte();
+
+    try {
+      val byteBuffer = ByteBuffer.allocate(hashData.version.versionIdentifier.size +
+              costFactorBytes.size + 3 + saltEncoded.size + hashEncoded.size)
+      byteBuffer.put(separator)
+      byteBuffer.put(hashData.version.versionIdentifier)
+      byteBuffer.put(separator)
+      byteBuffer.put(costFactorBytes)
+      byteBuffer.put(separator)
+      byteBuffer.put(saltEncoded)
+      return String(byteBuffer.array(), Charsets.UTF_8)
+    } finally {
+      Bytes.wrapNullSafe(saltEncoded).mutable().secureWipe()
+      Bytes.wrapNullSafe(hashEncoded).mutable().secureWipe()
+      Bytes.wrapNullSafe(costFactorBytes).mutable().secureWipe()
+    }
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
@@ -77,11 +114,31 @@ class FlutterBcryptPlugin: MethodCallHandler {
 
           result.success(r)
         }
+
+        "salt" -> {
+          val salt = BCrypt.HashData(6, BCrypt.Version.VERSION_2B, Bytes.random(SALT_LENGTH, SecureRandom()).array(),Bytes.random(23, SecureRandom()).array());
+          result.success(saltFromHashData(salt))
+        }
+        "saltWithRounds" -> {
+          val rounds = call.rounds()!!
+          val salt = BCrypt.HashData(rounds, BCrypt.Version.VERSION_2B, Bytes.random(SALT_LENGTH, SecureRandom()).array(),Bytes.random(23, SecureRandom()).array());
+          result.success(saltFromHashData(salt))
+        }
+        "verify" -> {
+          val password: String = call.password()!!
+          val hash: String = call.hash()!!
+          val r = BCrypt.verifyer().verify(password.toCharArray(), hash.toByteArray(Charsets.UTF_8))
+          result.success(r.verified)
+        }
+
+
         else -> result.notImplemented()
       }
     } catch (e: Exception) {
       Log.e("flutter_bcrypt", e.message)
       result.error("flutter_bcrypt", e.message, e)
     }
+
+
   }
 }

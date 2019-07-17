@@ -17,6 +17,6 @@ A flutter bcrypt hashing plugin delegating to android &#x2F; ios native implemen
   s.dependency 'Flutter'
   s.dependency 'BCryptSwift', '~> 1.1'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.3'
 end
 

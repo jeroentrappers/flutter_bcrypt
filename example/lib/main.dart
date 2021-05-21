@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
       print("result10: " +  (result10 ? "ok" : "nok"));
 
       var resultFailed = await FlutterBcrypt.verify(password: r'ThisPasswordIsWrong', hash: pwh10);
-      print("resultFailed: " +  (resultFailed ? "ok" : "nok"));
+      print("resultFailed: " +  (resultFailed ? "nok" : "ok"));
 
 
     } on PlatformException {

@@ -1,11 +1,18 @@
-## 1.0.0
+## 1.0.6
 
-* Initial release with support for iOS and Android
+* Null safety (thanks https://github.com/flawnn for the PR.)
+
+## 1.0.5
+
+* iOS version conflicts resolved
 
 ## 1.0.3
 
 * Improved documentation, format health for flutter packages
 
-## 1.0.5
+## 1.0.0
 
-* iOS version conflicts resolved
+* Initial release with support for iOS and Android
+
+
+

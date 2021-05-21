@@ -16,6 +16,10 @@ dev_dependencies:
 
 flutter:
   plugin:
-    androidPackage: be.appmire.flutter_bcrypt
-    pluginClass: FlutterBcryptPlugin
+    platforms:
+      android:
+        package: be.appmire.flutter_bcrypt
+        pluginClass: FlutterBcryptPlugin
+      ios:
+        pluginClass: FlutterBcryptPlugin
 

@@ -1,3 +1,7 @@
+## 1.0.7
+
+* Fix kotlin issue, thanks https://github.com/ziakhan110 for the PR.
+
 ## 1.0.6
 
 * Null safety (thanks https://github.com/flawnn for the PR.)

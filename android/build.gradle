@@ -40,7 +40,8 @@ android {
 }
 
 dependencies {
+    //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    implementation files('/Users/ziakhan/fvm/versions/stable/bin/cache/artifacts/engine/android-x64/flutter.jar')
-    api 'at.favre.lib:bcrypt:0.9.0'
+    implementation 'at.favre.lib:bcrypt:0.9.0'
 }
